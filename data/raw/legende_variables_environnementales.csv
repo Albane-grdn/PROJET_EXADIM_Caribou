@@ -1,0 +1,13 @@
+﻿Variable,Description,Unite
+individu,Identifiant de l’individu,
+ecotype,Écotype (groupe écologique/génétique) de l’individu,
+longitude,Longitude du lieu d’échantillonnage (WGS84),degrés décimaux
+latitude,Latitude du lieu d’échantillonnage (WGS84),degrés décimaux
+temp_moy_annuelle,Température moyenne annuelle,°C
+amplitude_thermique_journaliere,Amplitude thermique journalière moyenne (moyenne mensuelle de Tmax − Tmin),°C
+saisonnalite_temperature,Saisonnalité de la température (écart-type des moyennes mensuelles),°C
+precip_annuelles,Précipitations annuelles,mm
+saisonnalite_precip,Saisonnalité des précipitations (coefficient de variation des précipitations mensuelles),%
+ndvi,Indice de végétation par différence normalisée (NDVI),sans unité
+altitude,Altitude,m
+couverture_arboree,Pourcentage de couverture arborée,%
