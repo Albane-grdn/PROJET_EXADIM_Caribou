@@ -14,6 +14,7 @@ packages = c("tidyverse",
              "leaflet"# packages collection for data manipulation 
              # ""
 ) 
+
 source(file = file.path(paste0(dir, "/03.functions.R")))
 
 # ------------------------------------------------------------------------------
