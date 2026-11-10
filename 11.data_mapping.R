@@ -5,18 +5,9 @@
 data.gen <- readRDS(file = file.path(paste0(p.proc.data,"/data.gen_2026-10-01.RData")))
 data.env <- readRDS(file = file.path(paste0(p.proc.data,"/data.env_2026-10-01.RData")))
 
-# ------------------------------------------------------------------------------
-# CARTOGRAPHIE DES COV. ENV.
-# rassemblre en 9 classes lea saisonalité des précipitation 
-col.precip <- RColorBrewer::brewer.pal(n = max(data.env$saisonnalite_precip), name = "Blues") #YlGnBu
+# CARTOGRAPHIE DES COV. ENV.----------------------------------------------------
 
-# essaie pour faire un vrai gradient de saisonalité, besoin de normer les données entre 0 et 1 
-# scale_colour_viridis_c(name = "Saisonalité des précipitations", 
-#                        begin = min((data.env$saisonnalite_precip)),
-#                        end = max(data.env$saisonnalite_precip))
-
-# ------------------------------------------------------------------------------
-# PLUVIOMETRIE 
+## PLUVIOMETRIE-----------------------------------------------------------------
 bins <- c(10, 20, 30, 40, 50, 60, 70, 80) # min = 11, max = 76
 pal.rain <- colorBin("YlGnBu", 
                      domain = data.env$saisonnalite_precip,
@@ -39,8 +30,9 @@ map.env.rain <- leaflet(data.env) %>%
             position = "bottomright")
 
 map.env.rain  # Print the map
-# ------------------------------------------------------------------------------
-# TEMPERATURE
+
+
+## TEMPERATURE------------------------------------------------------------------
 bins <- c(0, 2, 4, 6, 8, 10, 12, 14) # min = 4.9, max = 12.9
 pal.amp.temp <- colorBin("YlGnBu", 
                          domain = data.env$amplitude_thermique_journaliere,
@@ -81,4 +73,5 @@ map.env.temp <- leaflet(data.env) %>%
   )
 
 map.env.temp
+
 # ------------------------------------------------------------------------------
