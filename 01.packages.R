@@ -9,9 +9,12 @@ p.raw.data <- file.path(paste0(dir, "/data/raw"))
 p.proc.data <- file.path(paste0(dir, "/data/processed"))
 
 # Libraries---------------------------------------------------------------------
-packages = c("tidyverse",
-             "leaflet"# packages collection for data manipulation 
-             # ""
+packages = c(
+             # data manipulation
+             "tidyverse",  
+             # beautiful maps
+             "leaflet",
+             "leaflegend"
 ) 
 
 source(file = file.path(paste0(dir, "/03.functions.R")))
