@@ -14,7 +14,8 @@ packages = c(
              "tidyverse",  
              # beautiful maps
              "leaflet",
-             "leaflegend"
+             "leaflegend",
+             "vegan3d"
 ) 
 
 source(file = file.path(paste0(dir, "/03.functions.R")))
