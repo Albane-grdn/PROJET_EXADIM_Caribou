@@ -18,7 +18,8 @@ packages = c(
              "vegan3d", # 3D CCA plotting 
              "psych", # pairs.panels()
              "matrixCorr", # spearman_rho
-             "ade4" # PCA (dudi.pca())
+             "ade4", # PCA (dudi.pca())
+             "adegenet" # multivariate analysis on genetic data
 ) 
 
 source(file = file.path(paste0(dir, "/03.functions.R")))
