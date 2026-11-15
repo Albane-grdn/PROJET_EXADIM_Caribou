@@ -21,6 +21,10 @@ data.env <- readRDS(file = file.path(latest.env)) # load latest version of envir
 # adegenet ---------------------------------------------------------------------
 ## Data management  ------------------------------------------------------------
 gen_ind <- as.genind(data.gen, pop = data.env$ecotype) # Turn data into genind object
+pop(gen_ind) # nb of ecotypes included in the analysis 
+
+gen_pop <- genind2genpop(gen_ind) # Converting to genpop object
+
 
 
 
