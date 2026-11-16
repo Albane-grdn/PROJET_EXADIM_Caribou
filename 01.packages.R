@@ -19,8 +19,11 @@ packages = c(
              "psych", # pairs.panels()
              "matrixCorr", # spearman_rho
              "ade4", # PCA (dudi.pca())
-             "adegenet" # multivariate analysis on genetic data
-) 
+             "adegenet", # multivariate analysis on genetic data
+             "adegraphics", # control of labels for optimal representation of the PCA 
+             "ggplot",
+             "ggrepl" # for easier representation of PCA
+             ) 
 
 source(file = file.path(paste0(dir, "/03.functions.R")))
 
