@@ -8,7 +8,7 @@
 # latest.env <- get_latest_env(p.proc.data) 
 
 # Already done in 01.R
-# data.gen <- readRDS(file = file.path(latest.gen))# load latest version of genetic data
+data.gen <- readRDS(file = file.path(latest.gen))# load latest version of genetic data
 rownames(data.gen)<- data.gen$individu # Turn individuals's ids into rownames 
 data.gen <- data.gen[, -c(1)] # Suppress the individual column 
 # Already done in 01.R
@@ -27,7 +27,7 @@ pop(gen_ind) # nb of ecotypes included in the analysis
 gen_pop <- genind2genpop(gen_ind) # Converting to genpop object
 
 ## PCA ------------------------------------------------------------
-pca1 <- dudi.pca(gen_ind,cent=T,scale=T)
+pca1 <- dudi.pca(gen_ind,cent=T,scale=T, scannf = FALSE, nf = 2)
 barplot(pca1$eig[1:50],main="PCA eigenvalues", col=heat.colors(50))
 
 # Labels overlap, prefer adegraphics
@@ -60,10 +60,16 @@ car.mod <- adonis2(gen_ind ~ ecotype, # gene sequence comparison between ecotype
 # Pairwise comparison of ecotypes, significance assessed through Pr
 pairwise.adonis2(gen_ind ~ ecotype, data = data.env, nperm = 999)
 
+### Clustering   ------------------------------------------------------------
+distgo = daisy(data.gen, metric = "euclidean") # A marché une fois avec les id des ind mais lpus maintenant AAAAAAAAAAAAH 
 
+plot.new()
+hgo = hclust(distgo) ; plot(hgo, hang = -1) # Clustering hiérarchique basique
+cut3 = cutree(hgo, h = 72.2) ; abline(h = 72.2, col = "blue") # Découpage de l'arbre 
+# à 0.8 = on obtient 3 groupes, permet de créer un vecteur d'intersection décrivant à quel groupe appartient l'sp
+adonis2(distgo ~ cut3) # Utilisation directe des résultats du clustering à 3 groupes pour une PERMANOVA
 
-
-
-
+cut5 = cutree(hgo, h = 0.6) ; abline(h = 0.6, col = "red") # Découpage de l'arbre à 0.8 = on obtient 6 groupes
+adonis2(distgo ~ cut5) # Utilisation directe des résultats du clustering à 5 groupes pour une PERMANOVA
 
 
