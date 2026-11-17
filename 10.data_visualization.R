@@ -22,8 +22,27 @@ for (x in 1:ncol(data.env_num)) {
 hist(str_count(data.env$ecotype), main = (colnames(data.env$ecotype)))
 
 # Genotypic data ---------------------------------------------------------
-# PCA based on Novembre et al., 2008 and Leslie et al., 2015
+# allelic composition of ecotypes ----------------------------------------------
 
+data.gen.eco <- data.gen
+data.gen.eco[,ncol(data.gen.eco)+1] <- data.env$ecotype
+colnames(data.gen.eco)[6001] <- "ecotype"
+
+hau.arc <- filter(data.gen.eco, data.gen.eco$ecotype == "Haut_Arctique")
+sum.rare.all <- data.frame(colnames(hau.arc[,1:6000]), colSums(hau.arc[,1:6000]))
+colnames(sum.rare.all)[1] <- "SNP"
+colnames(sum.rare.all)[2] <- "count"
+
+# too much data need to be re thought, maybe plot only SNP which shows higher rare allels than the mean of all pop ? 
+g <- ggplot(data = sum.rare.all, aes(SNP, count))+
+  geom_point()
+g <- ggplot(sum.rare.all, aes(x = SNP, y = count)) +
+  geom_point(size = 2, color = "steelblue", alpha = 0.7) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6)) +
+  labs(x = "SNP", y = "Nombre d'allèles rares")
+
+## PCA based on Novembre et al., 2008 and Leslie et al., 2015 -------------------
 X11()
 pairs.panels(data.gen[,2:15], # ne peut pas prendre en charge simultanément 
              # les 6000 SNP 
@@ -43,9 +62,10 @@ if (exists("pair.spears")==F) {
 
 ## PCA using genind object ------------------------------------------------------
 ### data  ------------------------------------------------------
-rownames(data.gen)<- data.gen$individu # Turn individuals's ids into rownames 
-data.gen <- data.gen[, -c(1)] # Suppress the individual column 
-gen_ind <- as.genind(data.gen, pop = data.env$ecotype) # Turn data into genind object
+data.gen.perm <- readRDS(file = file.path(latest.gen))# load latest version of genetic data
+rownames(data.gen.perm)<- data.gen.perm$individu # Turn individuals's ids into rownames 
+data.gen.perm <- data.gen.perm[, -c(1)] # Suppress the individual column 
+gen_ind <- as.genind(data.gen.perm, pop = data.env$ecotype) # Turn data into genind object
 
 ### PCA analysis ------------------------------------------------------
 pca_3axis <- dudi.pca(gen_ind,cent=T,scale=T, scannf = FALSE, nf = 3) # PCA used for 3D plotting but only 2 axis should be retained for analysis 
