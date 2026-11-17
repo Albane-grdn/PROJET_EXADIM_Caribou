@@ -18,6 +18,7 @@ packages = c(
              "vegan", # adonis2()
              "pairwiseAdonis", # pairwise comparison for permanova
              "vegan3d", # 3D CCA plotting 
+             "rgl", # add legend in 3D plots
              "psych", # pairs.panels()
              "matrixCorr", # spearman_rho
              "ade4", # PCA (dudi.pca())
