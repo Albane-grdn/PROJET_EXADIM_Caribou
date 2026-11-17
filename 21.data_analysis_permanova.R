@@ -7,7 +7,6 @@
 # latest.gen <- get_latest_gen(p.proc.data) 
 # latest.env <- get_latest_env(p.proc.data) 
 
-# Already done in 01.R
 data.gen.perm <- readRDS(file = file.path(latest.gen))# load latest version of genetic data
 rownames(data.gen.perm)<- data.gen.perm$individu # Turn individuals's ids into rownames 
 data.gen.perm <- data.gen.perm[, -c(1)] # Suppress the individual column 
