@@ -8,9 +8,9 @@
 # latest.env <- get_latest_env(p.proc.data) 
 
 # Already done in 01.R
-data.gen <- readRDS(file = file.path(latest.gen))# load latest version of genetic data
-rownames(data.gen)<- data.gen$individu # Turn individuals's ids into rownames 
-data.gen <- data.gen[, -c(1)] # Suppress the individual column 
+data.gen.perm <- readRDS(file = file.path(latest.gen))# load latest version of genetic data
+rownames(data.gen.perm)<- data.gen.perm$individu # Turn individuals's ids into rownames 
+data.gen.perm <- data.gen.perm[, -c(1)] # Suppress the individual column 
 # Already done in 01.R
 # data.env <- readRDS(file = file.path(latest.env)) # load latest version of environmental data
 
@@ -21,7 +21,7 @@ data.gen <- data.gen[, -c(1)] # Suppress the individual column
 
 # ADEGENET ---------------------------------------------------------------------
 ## Data management  ------------------------------------------------------------
-gen_ind <- as.genind(data.gen, pop = data.env$ecotype) # Turn data into genind object
+gen_ind <- as.genind(data.gen.perm, pop = data.env$ecotype) # Turn data into genind object
 pop(gen_ind) # nb of ecotypes included in the analysis 
 
 gen_pop <- genind2genpop(gen_ind) # Converting to genpop object
@@ -61,7 +61,7 @@ car.mod <- adonis2(gen_ind ~ ecotype, # gene sequence comparison between ecotype
 pairwise.adonis2(gen_ind ~ ecotype, data = data.env, nperm = 999)
 
 ### Clustering   ------------------------------------------------------------
-distgo = daisy(data.gen, metric = "euclidean") # A marché une fois avec les id des ind mais lpus maintenant AAAAAAAAAAAAH 
+distgo = daisy(data.gen.perm, metric = "euclidean") # A marché une fois avec les id des ind mais lpus maintenant AAAAAAAAAAAAH 
 
 plot.new()
 hgo = hclust(distgo) ; plot(hgo, hang = -1) # Clustering hiérarchique basique
