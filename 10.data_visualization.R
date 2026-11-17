@@ -36,48 +36,30 @@ pairs.panels(data.gen[,2:15], # ne peut pas prendre en charge simultanément
 # Spearman pairwise correlation 
 # -> expected time for spearman pairwise corr : t  = 120 sec
 
-# NOT WORKING RN : need to be implemented implemented directly into the function 
-# if (withCallingHandlers(get_latest_spear(p.pca))==T) { # to run the code if there is no pair.spear.corr.RData
-#   # t <- system.time(pair.spears <- spearman_rho(
-#   #   data.gen[,2:6001],
-#   #   na_method = "pairwise",
-#   #   ci = FALSE,
-#   #   conf_level = 0.95,
-#   #   n_threads = getOption("matrixCorr.threads", 1L),
-#   #   output = c("matrix"),
-#   #   diag = TRUE))
-#   # saveRDS(pair.spears, file = file.path(paste0(p.pca, "/pair.spear.corr_", date,".RData")))
-# }
-
 if (exists("pair.spears")==F) {
   latest.spear <- get_latest_spear(p.pca) 
   pair.spears <- readRDS(file = file.path(latest.spear))
 }
 
-# NOT WORKING : too much data 
-# plot(
-#   pair.spears,
-#   title = "Spearman's rank correlation heatmap",
-#   low_color = "indianred1",
-#   high_color = "steelblue1",
-#   mid_color = "white",
-#   value_text_size = 4,
-#   ci_text_size = 3,
-#   show_value = TRUE
-# )
+## PCA using genind object ------------------------------------------------------
+### data  ------------------------------------------------------
+rownames(data.gen)<- data.gen$individu # Turn individuals's ids into rownames 
+data.gen <- data.gen[, -c(1)] # Suppress the individual column 
+gen_ind <- as.genind(data.gen, pop = data.env$ecotype) # Turn data into genind object
 
-## PCA ------------------------------------------------------
+### PCA analysis ------------------------------------------------------
+pca_3axis <- dudi.pca(gen_ind,cent=T,scale=T, scannf = FALSE, nf = 3) # PCA used for 3D plotting but only 2 axis should be retained for analysis 
+barplot(pca_3axis$eig[1:50],main="PCA eigenvalues", col=heat.colors(50))
 
-pca <-dudi.pca(data.gen[,2:1001], scale=T, center=T)
-pca$eig # variance portée par les axes de l'ACP,
-pc<-round(pca$eig/sum(pca$eig)*100,2) # % d'inertie associée aux axes 
+pca_3axis$eig # variance portée par les axes de l'ACP,
+pc<-round(pca_3axis$eig/sum(pca_3axis$eig)*100,2) # % d'inertie associée aux axes 
 
-pca$li # coordonnees des individus sur chaque composante factorielle
-s.label(pca$li[,1:2], clabel=0.5) # representation sur les axes 1 et 2
+### Plotting of PCA results ------------------------------------------------------
+pca_3axis$li # coordonnees des individus sur chaque composante factorielle
+s.label(pca_3axis$li[,1:2], clabel=0.5) # representation sur les axes 1 et 2
 
-## Plotting of PCA results ------------------------------------------------------
-scores.ind <- as.data.frame(pca$li)
-scores.ind[,ncol(pca$li)+1] <- data.env$ecotype
+scores.ind <- as.data.frame(pca_3axis$li)
+scores.ind[,ncol(pca_3axis$li)+1] <- data.env$ecotype
 colnames(scores.ind)[ncol(scores.ind)] <- "Ecotypes"
 
 # Axes principaux retenus : 1 et 2 
@@ -90,6 +72,14 @@ ggplot(scores.ind, aes(Axis2, Axis3, colour = Ecotypes)) +
 ggplot(scores.ind, aes(Axis1, Axis3, colour = Ecotypes)) +
   geom_point()
 
-# 3D plot og the PCA results but couldn't figure out how to put the colors 
-ordirgl(pca, type = "p") # position des sites qui sont issues de la moyenne pondérées des sp qu'ils contiennent 
+# Used Claude to set up different colors for each ecotypes in ordirgl 
+ecot <- as.factor(data.env$ecotype)
+# col.ecot <- c("#4DAF4A", "#FF7F00", "#377EB8","#E41A1C", "#984EA3")
+col.ecot <- c("#FF7F00", "#984EA3","#4DAF4A", "#377EB8","#E41A1C")
+col.ecot.ind <- col.ecot[as.integer(ecot)]  
 
+# 3D plot og the PCA results but couldn't figure out how to put the colors 
+ordirgl(pca_3axis, type = "p", col = col.ecot.ind, 
+        ax.col = "darkgrey") # position des sites qui sont issues de la moyenne pondérées des sp qu'ils contiennent 
+legend3d("topright", legend = levels(ecot),
+         pch = 1, col = col.ecot, cex = 0.8)
