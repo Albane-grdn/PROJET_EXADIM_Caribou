@@ -16,13 +16,14 @@ data.env <- readRDS(file = file.path(latest.env)) # load latest version of envir
 # data.env.perm <- as.data.frame(t(data.env[,2:12]))
 # colnames(data.env.perm) <- data.env$individu
 
-# adegenet ---------------------------------------------------------------------
+# ADEGENET ---------------------------------------------------------------------
 ## Data management  ------------------------------------------------------------
 gen_ind <- as.genind(data.gen, pop = data.env$ecotype) # Turn data into genind object
 pop(gen_ind) # nb of ecotypes included in the analysis 
 
 gen_pop <- genind2genpop(gen_ind) # Converting to genpop object
 
+## PCA ------------------------------------------------------------
 pca1 <- dudi.pca(gen_ind,cent=T,scale=T)
 barplot(pca1$eig[1:50],main="PCA eigenvalues", col=heat.colors(50))
 
@@ -62,10 +63,17 @@ s.class(as.data.frame(pca1$li), pop(gen_ind),
 #   theme_minimal() +
 #   theme(legend.position = "none")
 
+## Permanova ------------------------------------------------------------
+# Test ecotypes effect 
 
+car.mod <- adonis2(gen_ind ~ ecotype, 
+                    data = data.env, 
+                    permutations = 999,
+                    method = "euclidean", # Need to justify the method 
+                    by = "terms") 
 
-
-
+# Pairwise comparison of ecotypes, significance assessed through Pr
+pairwise.adonis2(gen_ind ~ ecotype, data = data.env, nperm = 999)
 
 
 
