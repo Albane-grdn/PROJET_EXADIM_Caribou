@@ -11,7 +11,7 @@
 # Environnemental data ---------------------------------------------------------
 # Histogramme des fq d'individus pour les variables environnementales numériques
 data.env_num <- select_if(data.env, is.numeric)
-# par( mfrow= c(4,4) )
+# par( mfrow= c(4,4))
 for (x in 1:ncol(data.env_num)) {
   # par( mfrow= c(4,4) )
   hist((data.env_num[,x]), main = colnames(data.env_num[x]))
@@ -21,7 +21,25 @@ for (x in 1:ncol(data.env_num)) {
 # Histogramme des fq d'individus selon les écotypes 
 hist(str_count(data.env$ecotype), main = (colnames(data.env$ecotype)))
 
-# Genotypic data ---------------------------------------------------------
+# Couvert arboré et écotypes :
+# -> voir à quel écotype, décrit selon leur écologie par Mallory et Hillis, 1998, 
+# pourrait correpsondre nos modalités d'écotypes
+
+bxplt_couv <- data.env%>%
+  ggplot( aes(x=ecotype, y=couverture_arboree, fill=ecotype)) +
+  geom_boxplot() +
+  scale_fill_viridis(discrete = TRUE, alpha=0.6) +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  ggtitle("Couvert arboré") +
+  xlab("Ecotype")+
+  ylab("Indice de couvert arboré")
+
+# Genotypic data ---------------------------------------------------------------
 # allelic composition of ecotypes ----------------------------------------------
 
 data.gen.eco <- data.gen
@@ -42,7 +60,7 @@ g <- ggplot(sum.rare.all, aes(x = SNP, y = count)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6)) +
   labs(x = "SNP", y = "Nombre d'allèles rares")
 
-## PCA based on Novembre et al., 2008 and Leslie et al., 2015 -------------------
+## PCA based on Novembre et al., 2008 and Leslie et al., 2015 ------------------
 X11()
 pairs.panels(data.gen[,2:15], # ne peut pas prendre en charge simultanément 
              # les 6000 SNP 
