@@ -49,11 +49,23 @@ bxplt_ndvi <- data.env%>%
     legend.position="none",
     plot.title = element_text(size=11)
   ) +
-  ggtitle("Indice de végétation par différence normalisée (NDVI)") +
+  ggtitle("Indice de végétation par différence normalisée (NDVI) ") +
   xlab("Ecotype")+
   ylab("NDVI")
 
-
+bxplt_alt <- data.env%>%
+  ggplot( aes(x=ecotype, y=altitude, fill=ecotype)) +
+  geom_boxplot() +
+  scale_fill_viridis(discrete = TRUE, alpha=0.6) +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  ggtitle("Altitude") +
+  xlab("Ecotype")+
+ylab("m")
 # Genotypic data ---------------------------------------------------------------
 # allelic composition of ecotypes ----------------------------------------------
 
