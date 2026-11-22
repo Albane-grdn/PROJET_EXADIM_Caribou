@@ -8,13 +8,17 @@ dir <- getwd()
 p.raw.data <- file.path(paste0(dir, "/data/raw")) # path to raw data
 p.proc.data <- file.path(paste0(dir, "/data/processed")) # path to processed data 
 p.pca <- file.path(paste0(dir, "/PCA results")) # path to outputs of PCA analysis done in 10.data_vizualisation.R
+
 # Libraries---------------------------------------------------------------------
 packages = c(
              # data manipulation
-             "tidyverse",  
+             "tidyverse",
+             # graphics
+             "ggplot2",
              # beautiful maps
              "leaflet",
              "leaflegend",
+             # analysis
              "vegan", # adonis2()
              "pairwiseAdonis", # pairwise comparison for permanova
              "vegan3d", # 3D CCA plotting 
@@ -24,11 +28,15 @@ packages = c(
              "ade4", # PCA (dudi.pca())
              "adegenet", # multivariate analysis on genetic data
              "adegraphics", # control of labels for optimal representation of the PCA 
-             "ggplot2",
              "ggrepel" # for easier representation of PCA
              ) 
 
 source(file = file.path(paste0(dir, "/03.functions.R")))
+
+# #NB with the new R version 4.6.2 --> "aucun package nommé ‘pairwiseAdonis’ n'est trouvé"
+# install.packages('devtools')
+# library(devtools)
+# install_github("pmartinezarbizu/pairwiseAdonis/pairwiseAdonis")
 
 # Time stamps for files' name---------------------------------------------------
 date <- today()
