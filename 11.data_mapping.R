@@ -17,6 +17,7 @@ map.env.rain <- leaflet(data.env) %>%
   addProviderTiles("Stadia.StamenTerrain") %>%
   addCircleMarkers(lng=data.env$longitude,
                    lat= data.env$latitude,
+                   popup = ~individu,
                    radius = ~(data.env$precip_annuelles)/50,
                    color = "black",
                    fillColor = ~pal.rain(data.env$saisonnalite_precip),
@@ -58,6 +59,7 @@ map.env.amp.temp <- leaflet(data.env) %>%
   addProviderTiles("Stadia.StamenTerrain") %>%
   addCircleMarkers(lng=data.env$longitude,
                    lat= data.env$latitude,
+                   popup = ~individu,
                    
                    #Amplitude de température
                    radius = ~data.env$amplitude_thermique_journaliere,
@@ -102,6 +104,7 @@ map.env.ecot <- leaflet(data.env) %>%
   addCircleMarkers(lng=data.env$longitude,
                    lat= data.env$latitude,
                    radius = 5,
+                   popup = ~individu,
                    
                    # Set a color per ecotype
                    color = "black",
