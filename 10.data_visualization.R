@@ -66,9 +66,13 @@ bxplt_alt <- data.env%>%
   ggtitle("Altitude") +
   xlab("Ecotype")+
 ylab("m")
-# Genotypic data ---------------------------------------------------------------
-# allelic composition of ecotypes ----------------------------------------------
 
+
+# Genotypic data ---------------------------------------------------------------
+data.gen[c(1:4), c(1:8)]
+unique(data.gen$snp_00001) #0= allèle abs, 1= homozygote, 2= hétérozygote
+
+# allelic composition of ecotypes ----------------------------------------------
 data.gen.eco <- data.gen
 data.gen.eco[,ncol(data.gen.eco)+1] <- data.env$ecotype
 colnames(data.gen.eco)[6001] <- "ecotype"
@@ -78,14 +82,14 @@ sum.rare.all <- data.frame(colnames(hau.arc[,1:6000]), colSums(hau.arc[,1:6000])
 colnames(sum.rare.all)[1] <- "SNP"
 colnames(sum.rare.all)[2] <- "count"
 
-# too much data need to be re thought, maybe plot only SNP which shows higher rare allels than the mean of all pop ? 
-g <- ggplot(data = sum.rare.all, aes(SNP, count))+
-  geom_point()
-g <- ggplot(sum.rare.all, aes(x = SNP, y = count)) +
-  geom_point(size = 2, color = "steelblue", alpha = 0.7) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6)) +
-  labs(x = "SNP", y = "Nombre d'allèles rares")
+# # too much data need to be re thought, maybe plot only SNP which shows higher rare allels than the mean of all pop ? 
+# g <- ggplot(data = sum.rare.all, aes(SNP, count))+
+#   geom_point()
+# g <- ggplot(sum.rare.all, aes(x = SNP, y = count)) +
+#   geom_point(size = 2, color = "steelblue", alpha = 0.7) +
+#   theme_minimal() +
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6)) +
+#   labs(x = "SNP", y = "Nombre d'allèles rares")
 
 ## PCA based on Novembre et al., 2008 and Leslie et al., 2015 ------------------
 X11()

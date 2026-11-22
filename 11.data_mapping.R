@@ -97,7 +97,7 @@ map.env.amp.temp  # Print the map
 pal.ecot <- colorFactor(
                 palette = "Set1", 
                 domain = data.env$ecotype,
-                reverse = TRUE)
+                reverse = TRUE) 
 
 map.env.ecot <- leaflet(data.env) %>%
   addProviderTiles("Stadia.StamenTerrain") %>%
