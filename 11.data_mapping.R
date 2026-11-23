@@ -5,6 +5,7 @@
 data.gen <- readRDS(file = file.path(paste0(p.proc.data,"/data.gen_2026-10-01.RData")))
 data.env <- readRDS(file = file.path(paste0(p.proc.data,"/data.env_2026-10-01.RData")))
 
+# test
 # CARTOGRAPHIE DES COV. ENV.----------------------------------------------------
 
 ## PLUVIOMETRIE & SAISONALITE---------------------------------------------------
