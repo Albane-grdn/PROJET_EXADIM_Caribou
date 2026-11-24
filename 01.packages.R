@@ -6,15 +6,23 @@
 # Path--------------------------------------------------------------------------
 dir <- getwd()
 p.raw.data <- file.path(paste0(dir, "/data/raw")) # path to raw data
+
+dir.create(file.path(paste0(dir, "/data/processed"))) # create dir for processed data
 p.proc.data <- file.path(paste0(dir, "/data/processed")) # path to processed data 
+
+dir.create(file.path(paste0(dir, "/PCA results"))) # create dir for PCA results
 p.pca <- file.path(paste0(dir, "/PCA results")) # path to outputs of PCA analysis done in 10.data_vizualisation.R
 
+dir.create(file.path(paste0(dir, "/figures"))) # create dir for report's figures
+p.figures <- file.path(paste0(dir, "/figures")) # path to figures done in 12.R
 # Libraries---------------------------------------------------------------------
 packages = c(
              # data manipulation
              "tidyverse",
              # graphics
              "ggplot2",
+             "gridExtra",
+             
              # beautiful maps
              "leaflet",
              "leaflegend",
