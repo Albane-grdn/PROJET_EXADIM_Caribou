@@ -6,6 +6,12 @@ data.gen.perm <- readRDS(file = file.path(latest.gen))# load latest version of g
 rownames(data.gen.perm)<- data.gen.perm$individu # Turn individuals's ids into rownames 
 data.gen.perm <- data.gen.perm[, -c(1)] # Suppress the individual column 
 
+matrix.env.log <- data.env %>%
+  mutate(across(5:12, ~ log(.x+22.4))) %>%
+  select(-individu, -ecotype)
+matrix.env.log$longitude <- matrix.env.log$longitude*(-1)
+
+
 prop.selected.SNP <- c(".10.90", 
                        ".5.95",
                        ".2.98") 
@@ -72,7 +78,7 @@ for (p in prop.selected.SNP) {
   cca.subset <-cca(matrix ~ ., data = matrix.env.sub)
   vif <- vif.cca(cca.subset)
   # Valeur du R² : corrélation sp-env. 
-  r.sq <- RsquareAdj(cca.select)
+  r.sq <- RsquareAdj(cca.subset)
   
   assign(paste0("cca2",p), cca.subset)
   assign(paste0("vif2",p), vif)
@@ -81,7 +87,9 @@ for (p in prop.selected.SNP) {
 }
 ## Results ---------------------------------------------------------------------
 
-summary(cca.subset)
+summary(cca2.2.98)
+summary(cca2.5.95)
+summary(cca2.10.90)
 
 ## Plot ------------------------------------------------------------------------
 
@@ -102,8 +110,8 @@ for (p in prop.selected.SNP) {
   
   
   png(file.path(paste0(p.figures,"/CCA_plot_subset",p,".png")),
-      width = 800,
-      height = 800,
+      width = 1000,
+      height = 1000,
       res = 110,
       units = "px")
   plot(cca.subset, type = "n")
@@ -128,29 +136,55 @@ for (p in prop.selected.SNP) {
     cex = 0.8
   )
   
-  arrows(
+  if (p == ".10.90") {
+    arrows(
     0, 0,
-    bp[,1], bp[,2],
+    (bp[,1])*1.9, (bp[,2])*1.9,
     length = 0.1,
     col = "red",
     lwd = 1.5
   )
   
   text(
-    bp[,1], bp[,2],
+    (bp[,1])*2, (bp[,2])*2,
     labels = rownames(bp),
     col = "red",
     pos = 4
-  )
+  ) # ajouter position spécifique pour ndvi pour le recouvrement des labels dans la figure 
+  }else{ 
+    arrows(
+      0, 0,
+      (bp[,1])*1.7, (bp[,2])*1.7,
+      length = 0.1,
+      col = "red",
+      lwd = 1.5
+    )
+    
+    text(
+      (bp[,1])*1.9, (bp[,2])*1.9,
+      labels = rownames(bp),
+      col = "red",
+      pos = 4
+    ) # modifier le max des axes pour .2.98 et .5.95 : pour figures 
+  }
   
-  legend(
+  if (p == ".10.90"){
+    legend(
     "topright",
     legend = names(col_ecotype),
     pt.bg = col_ecotype,
     pch = 21,
     col = "black",
     title = "Ecotype"
-  )
+  )}else{
+    legend(
+      "bottomright",
+      legend = names(col_ecotype),
+      pt.bg = col_ecotype,
+      pch = 21,
+      col = "black",
+      title = "Ecotype")
+  }
   dev.off()
   
 }
