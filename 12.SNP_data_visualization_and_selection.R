@@ -22,18 +22,14 @@ for (e in l.ecot) {
   
   sum.rare.all <- sum.rare.all[order(sum.rare.all$count),] # on ordonne pour avoir SNP présentant le moins d'allèle rare à ceux avec le plus d'allèles rares 
   
-  SNP.interest <- sum.rare.all %>%
-    filter(sum.rare.all$frequency <=0.1 | sum.rare.all$frequency >= 0.9)
-    
   assign(paste0(e,"_snp"),sum.rare.all) # on crée un nouveau df par écotype 
-  assign(paste0("SNP.interest.",e),SNP.interest) # on crée un nouveau df par écotype 
   
 }
 rm(ecot,
    sum.rare.all,
    SNP.interest)
 
-# VISUALIZATION  ---------------------------------------------------------------
+## Visualization ---------------------------------------------------------------
 
 for (e in l.ecot) {
   g <- ggplot(get(paste0(e, "_snp")), aes(x = reorder(SNP, frequency), y = frequency)) +
@@ -60,5 +56,46 @@ grid.arrange(plt.SNP.Arctique,
              ncol = 2, nrow= 3)
 dev.off()
 
-  
+## SNP selection ---------------------------------------------------------------
 
+for (e in l.ecot) {
+  sum.rare.all <- get(paste0(e, "_snp"))
+  SNP.interest.10.90 <-  sum.rare.all %>%
+    filter(sum.rare.all$frequency <=0.1 | sum.rare.all$frequency >= 0.9)
+  
+  SNP.interest.5.95 <- get(paste0(e, "_snp")) %>%
+    filter(sum.rare.all$frequency <=0.05 | sum.rare.all$frequency >= 0.95)
+  
+  SNP.interest.2.98 <- get(paste0(e, "_snp")) %>%
+    filter(sum.rare.all$frequency <=0.02 | sum.rare.all$frequency >= 0.98)
+  
+  
+  assign(paste0("SNP.interest.",e, ".10.90"),SNP.interest.10.90) # on crée un nouveau df par écotype 
+  assign(paste0("SNP.interest.",e, ".5.95"),SNP.interest.5.95) # on crée un nouveau df par écotype 
+  assign(paste0("SNP.interest.",e, ".2.98"),SNP.interest.2.98) # on crée un nouveau df par écotype 
+  
+}
+
+rm(sum.rare.all)
+
+SNP.interest.10.90.all <- data.frame(SNP = unique(c(SNP.interest.Arctique.10.90$SNP, 
+                                       SNP.interest.Foret_atlantique.10.90$SNP, 
+                                       SNP.interest.Foret_boreale.10.90$SNP,
+                                       SNP.interest.Haut_Arctique.10.90$SNP, 
+                                       SNP.interest.Foret_Ouest.10.90$SNP)))
+
+SNP.interest.5.95.all <- data.frame(SNP = unique(c(SNP.interest.Arctique.5.95$SNP, 
+                                                    SNP.interest.Foret_atlantique.5.95$SNP, 
+                                                    SNP.interest.Foret_boreale.5.95$SNP,
+                                                    SNP.interest.Haut_Arctique.5.95$SNP, 
+                                                    SNP.interest.Foret_Ouest.5.95$SNP)))
+
+SNP.interest.2.98.all <- data.frame(SNP = unique(c(SNP.interest.Arctique.2.98$SNP, 
+                                                    SNP.interest.Foret_atlantique.2.98$SNP, 
+                                                    SNP.interest.Foret_boreale.2.98$SNP,
+                                                    SNP.interest.Haut_Arctique.2.98$SNP, 
+                                                    SNP.interest.Foret_Ouest.2.98$SNP)))
+# NOT WORKING YET 
+# for (e in l.ecot) {
+#  rm(as.character(paste0("SNP.interest.", e, ".2.98")))
+# }
