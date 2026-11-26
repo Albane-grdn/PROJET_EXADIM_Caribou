@@ -26,7 +26,7 @@ for (e in l.ecot) {
   
 }
 rm(ecot,
-   sum.rare.all)
+sum.rare.all)
 
 ## Visualization ---------------------------------------------------------------
 
@@ -34,7 +34,7 @@ for (e in l.ecot) {
   g <- ggplot(get(paste0(e, "_snp")), aes(x = reorder(SNP, frequency), y = frequency)) +
     geom_col(color = "steelblue", alpha = 0.7)+
     scale_x_discrete(
-      labels = function(x) ifelse(x %in% get(paste0("SNP.interest.",e)), x, "")
+      labels = function(x) ifelse(x %in% get(paste0(e, "_snp")), x, "")
     )+
     theme_minimal() +
     labs(x = paste0("SNP ", e), y = "Fréquence allèles rares")
@@ -51,7 +51,7 @@ grid.arrange(plt.SNP.Arctique,
              plt.SNP.Haut_Arctique, 
              plt.SNP.Foret_Ouest, 
              plt.SNP.Foret_boreale, 
-             # plt.SNP.Foret_atlantique,
+             plt.SNP.Foret_atlantique,
              ncol = 2, nrow= 3)
 dev.off()
 
@@ -97,16 +97,11 @@ SNP.interest.2.98.all <- data.frame(SNP = unique(c(SNP.interest.Arctique.2.98$SN
 rm(list = c(paste0("SNP.interest.", l.ecot, ".2.98"),
    paste0("SNP.interest.", l.ecot, ".5.95"),
    paste0("SNP.interest.", l.ecot, ".10.90"),
-   paste0("SNP.interest.", l.ecot), 
+   paste0("SNP.interest.", l.ecot),
    "SNP.interest.2.98",
-   "SNP.interest.5.95", 
-   "SNP.interest.10.90"))
+   "SNP.interest.5.95",
+   "SNP.interest.10.90"
+   ))
 
-data.gen.perm.10.90 <- data.gen.perm[, names(data.gen.perm) %in% SNP.interest.10.90.all$SNP,
-                                     drop = FALSE]
-data.gen.perm.5.95 <- data.gen.perm[, names(data.gen.perm) %in% SNP.interest.5.95.all$SNP,
-                                     drop = FALSE]
-data.gen.perm.2.98 <- data.gen.perm[, names(data.gen.perm) %in% SNP.interest.2.98.all$SNP,
-                                     drop = FALSE]
 
 
