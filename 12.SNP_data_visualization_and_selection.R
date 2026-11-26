@@ -26,8 +26,7 @@ for (e in l.ecot) {
   
 }
 rm(ecot,
-   sum.rare.all,
-   SNP.interest)
+   sum.rare.all)
 
 ## Visualization ---------------------------------------------------------------
 
@@ -52,7 +51,7 @@ grid.arrange(plt.SNP.Arctique,
              plt.SNP.Haut_Arctique, 
              plt.SNP.Foret_Ouest, 
              plt.SNP.Foret_boreale, 
-             plt.SNP.Foret_atlantique,
+             # plt.SNP.Foret_atlantique,
              ncol = 2, nrow= 3)
 dev.off()
 
@@ -95,7 +94,19 @@ SNP.interest.2.98.all <- data.frame(SNP = unique(c(SNP.interest.Arctique.2.98$SN
                                                     SNP.interest.Foret_boreale.2.98$SNP,
                                                     SNP.interest.Haut_Arctique.2.98$SNP, 
                                                     SNP.interest.Foret_Ouest.2.98$SNP)))
-# NOT WORKING YET 
-# for (e in l.ecot) {
-#  rm(as.character(paste0("SNP.interest.", e, ".2.98")))
-# }
+rm(list = c(paste0("SNP.interest.", l.ecot, ".2.98"),
+   paste0("SNP.interest.", l.ecot, ".5.95"),
+   paste0("SNP.interest.", l.ecot, ".10.90"),
+   paste0("SNP.interest.", l.ecot), 
+   "SNP.interest.2.98",
+   "SNP.interest.5.95", 
+   "SNP.interest.10.90"))
+
+data.gen.perm.10.90 <- data.gen.perm[, names(data.gen.perm) %in% SNP.interest.10.90.all$SNP,
+                                     drop = FALSE]
+data.gen.perm.5.95 <- data.gen.perm[, names(data.gen.perm) %in% SNP.interest.5.95.all$SNP,
+                                     drop = FALSE]
+data.gen.perm.2.98 <- data.gen.perm[, names(data.gen.perm) %in% SNP.interest.2.98.all$SNP,
+                                     drop = FALSE]
+
+
