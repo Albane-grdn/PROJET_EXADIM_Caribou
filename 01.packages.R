@@ -15,6 +15,10 @@ p.pca <- file.path(paste0(dir, "/PCA results")) # path to outputs of PCA analysi
 
 dir.create(file.path(paste0(dir, "/figures"))) # create dir for report's figures
 p.figures <- file.path(paste0(dir, "/figures")) # path to figures done in 12.R
+
+dir.create(file.path(paste0(dir, "/tab"))) # create dir for report's figures
+p.tab <- file.path(paste0(dir, "/tab")) # path to figures done in 12.R
+
 # Libraries---------------------------------------------------------------------
 packages = c(
              # data manipulation
@@ -22,6 +26,9 @@ packages = c(
              # graphics
              "ggplot2",
              "gridExtra",
+             
+             # Tabs 
+             "writexl",
              
              # beautiful maps
              "leaflet",
